@@ -36,13 +36,13 @@ struct Opt {
     output: PathBuf,
 }
 
-type Matrix = Vec<Vec<bool>>;
+type Matrix = [Vec<bool>];
 
 trait MatPeek {
     fn mat_peek(&self, x: isize, y: isize) -> bool;
 }
 
-impl MatPeek for Vec<Vec<bool>> {
+impl MatPeek for [Vec<bool>] {
     /// Gets the pixel value at a given position in the matrix. Defaults to false (no pixel).
     fn mat_peek(&self, x: isize, y: isize) -> bool {
         let x: std::result::Result<usize, _> = x.try_into();
@@ -52,7 +52,7 @@ impl MatPeek for Vec<Vec<bool>> {
             (Ok(x), Ok(y)) => self
                 .get(y) //
                 .and_then(|row| row.get(x))
-                .map(|v| *v),
+                .copied(),
             (_, _) => None,
         }
         .unwrap_or(false)
