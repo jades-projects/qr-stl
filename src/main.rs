@@ -5,7 +5,7 @@ use std::ops::{Add, Deref, Mul, Neg, Sub};
 use std::{convert::TryInto, path::PathBuf};
 
 use qrcode_generator::QrCodeEcc;
-use stl_io::{Normal, Triangle, Vertex};
+use stl_io::{Normal, Triangle};
 use structopt::StructOpt;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
@@ -23,7 +23,11 @@ struct Opt {
     #[structopt(long, default_value = "5.0")]
     base_size: f32,
 
-    /// input file for the qr we are working with
+    /// height of the base to put on the qr code
+    #[structopt(long, default_value = "3.0")]
+    base_height: f32,
+
+    /// input text file for the qr content
     #[structopt(short = "i", long, parse(from_os_str))]
     input: Option<PathBuf>,
 
@@ -56,11 +60,11 @@ impl MatPeek for Vec<Vec<bool>> {
 }
 
 #[derive(Clone, Copy, Debug)]
-struct Vec3([f32; 3]);
+pub struct Vec3([f32; 3]);
 
 impl Vec3 {
     /// Vector cross product
-    fn crossp(self, rhs: Self) -> Self {
+    pub fn crossp(self, rhs: Self) -> Self {
         let Self([x1, y1, z1]) = self;
         let Self([x2, y2, z2]) = rhs;
         Vec3([
@@ -71,13 +75,13 @@ impl Vec3 {
     }
 
     /// Vector length
-    fn norm(self) -> f32 {
+    pub fn norm(self) -> f32 {
         let Self([x, y, z]) = self;
         (x.powi(2) + y.powi(2) + z.powi(2)).sqrt()
     }
 
     /// Unit vector in the direction of `self`
-    fn unitv(&self) -> Vec3 {
+    pub fn unitv(&self) -> Vec3 {
         Scale(self.norm().recip()) * (*self)
     }
 }
@@ -158,13 +162,6 @@ fn rect(p1: Vec3, p2: Vec3) -> [Triangle; 2] {
         ],
     };
     [tri1, tri2]
-}
-
-enum PeekDirection {
-    Left,
-    Down,
-    Right,
-    Up,
 }
 
 fn matrix_to_triangles(matrix: &Matrix, scale: f32) -> Vec<Triangle> {
@@ -251,7 +248,6 @@ fn offset_tris(tris: &mut [Triangle], offset: Vec3) {
 fn main() -> Result<()> {
     let opts = Opt::from_args();
 
-    println!("{:?}", &opts);
     let mut in_file: Box<dyn Read> = match opts.input {
         Some(f) => Box::new(fs::OpenOptions::new().read(true).open(f)?),
         None => Box::new(io::stdin()),
@@ -264,14 +260,12 @@ fn main() -> Result<()> {
     let mat = qrcode_generator::to_matrix(input, QrCodeEcc::Low)?;
 
     let mut tris = matrix_to_triangles(&mat, opts.pixel_size);
-    offset_tris(
-        &mut tris,
-        Vec3([opts.base_size, opts.base_size, opts.pixel_size]),
-    );
 
     let total = mat.len() as f32 * opts.pixel_size + 2. * opts.base_size;
     let base = opts.base_size;
-    let height = 3.;
+    let height = opts.base_height;
+    offset_tris(&mut tris, Vec3([opts.base_size, opts.base_size, height]));
+
     // bottom
     tris.extend_from_slice(&rect(Vec3([total, total, 0.]), Vec3([0., 0., 0.])));
 
@@ -298,7 +292,6 @@ fn main() -> Result<()> {
     tris.extend_from_slice(&rect(Vec3([0., 0., 0.]), Vec3([0., total, height])));
     tris.extend_from_slice(&rect(Vec3([total, total, height]), Vec3([total, 0., 0.])));
     tris.extend_from_slice(&rect(Vec3([0., total, height]), Vec3([total, total, 0.])));
-    // tris.extend_from_slice(&rect(Vec3([total, total, 0.]), Vec3([0., total, height])));
 
     let mut out_file = fs::OpenOptions::new()
         .write(true)
@@ -308,6 +301,5 @@ fn main() -> Result<()> {
     println!("Writing STL...");
     stl_io::write_stl(&mut out_file, tris.iter())?;
 
-    println!("Hello, world!");
     Ok(())
 }
