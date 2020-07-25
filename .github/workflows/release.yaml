@@ -35,15 +35,15 @@ jobs:
           command: build
           args: --release
       - uses: actions/upload-artifact@v2
-          if: matrix.os == 'windows-latest'
-          with:
-            name: qr-stl-win64.exe
-            path: ./target/release/qr-stl.exe
+        if: matrix.os == 'windows-latest'
+        with:
+          name: qr-stl-win64.exe
+          path: ./target/release/qr-stl.exe
       - uses: actions/upload-artifact@v2
-          if: matrix.os == 'ubuntu-latest'
-          with:
-            name: qr-stl-linux
-            path: ./target/x86_64-unknown-linux-musl/release/qr-stl
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: qr-stl-linux
+          path: ./target/x86_64-unknown-linux-musl/release/qr-stl
 
   upload:
     name: Upload assets to release
