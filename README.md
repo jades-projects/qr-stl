@@ -9,8 +9,9 @@ and other interesting projects.
 
 ## Usage:
 
-Download a release from the [releases page](releases). Make it executable (if
-on Linux) with `chmod +x qr-stl-linux`.
+Download a release from the [releases
+page](https://github.com/lf-/qr-stl/releases). Make it executable (if on
+Linux) with `chmod +x qr-stl-linux`.
 
 ```
 $ echo 'your message here' | ./qr-stl -o your-output.stl
