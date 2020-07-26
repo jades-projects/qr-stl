@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>qr2stl</title>
+    <link href="main.css" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <h1>qr-stl</h1>
+
+        <p>This experiment generates STL files for QR codes.</p>
+        <h3>
+            To generate a QR code for a WiFi connection:
+        </h3>
+        <pre><code>WIFI:T:WPA;S:"mynetwork";P:"mypass";;</code></pre>
+
+        <p>
+            <a href="https://github.com/zxing/zxing/wiki/Barcode-Contents#wi-fi-network-config-android-ios-11">For more
+                details, see the specification</a>
+        </p>
+        <h3>
+            Sample output for 'aaa':
+            <img src="demo.png" height="300px">
+        </h3>
+        <hr />
+
+        <form id="generate_form">
+            <label for="string_in">String</label>
+            <input id="string_in" placeholder="Text here">
+            <label for="base_height">Base height</label>
+            <input id="base_height" type="number" value="3.0">
+            <label for="base_size">Base size</label>
+            <input id="base_size" type="number" value="4.0">
+            <label for="pixel_size">Pixel size</label>
+            <input id="pixel_size" type="number" value="2.5">
+
+            <button id="generate_button" disabled type="submit">Generate</button>
+        </form>
+
+        <footer>
+            <p>Built with 🦀Rust and WebAssembly</p>
+            <p>This site brought to you with 💜 by <a href="https://github.com/lf-">Jade</a></p>
+        </footer>
+    </main>
+
+
+    <script src="index.js"></script>
+</body>
+
+</html>
