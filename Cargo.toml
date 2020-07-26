@@ -15,3 +15,4 @@ structopt = "0.3.15"
 # I don't know how to limit this to wasm but my perf is good enough so meh
 [profile.release]
 opt-level = "z"
+lto = "thin"

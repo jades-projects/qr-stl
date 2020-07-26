@@ -24,7 +24,6 @@ import('../pkg/index.js')
     .then(mod => {
         const form = document.getElementById('generate_form');
         form.onsubmit = function (ev) {
-            debugger;
             try {
                 const stl = mod.qr2stl(
                     ev.target.elements.string_in.value,

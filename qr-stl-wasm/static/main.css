@@ -36,6 +36,10 @@ input, button {
     font-size: 1.1rem;
 }
 
+footer {
+    padding-top: 5rem;
+}
+
 button {
     display: block;
     margin-top: 1rem;
