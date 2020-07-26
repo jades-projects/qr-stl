@@ -1,10 +1,12 @@
+mod result;
+
 use qrcode_generator::QrCodeEcc;
 use std::convert::TryInto;
 use std::io;
 use std::ops::{Add, Deref, Mul, Neg, Sub};
 use stl_io::{Normal, Triangle};
 
-use crate::result::Result;
+pub use crate::result::Result;
 
 const NO_NORMAL: Normal = [0., 0., 0.];
 

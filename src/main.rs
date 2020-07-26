@@ -1,15 +1,12 @@
-mod geom;
-mod result;
-
 use std::fs;
 use std::io;
 use std::io::Read;
-use std::{path::PathBuf};
+use std::path::PathBuf;
 
 use structopt::StructOpt;
 
-use crate::geom::{qr_to_triangles, MeshOptions, save_stl};
-use crate::result::Result;
+use qr_stl::Result;
+use qr_stl::{qr_to_triangles, save_stl, MeshOptions};
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "qr-stl")]
@@ -32,7 +29,7 @@ struct Opt {
 
     /// output file path
     #[structopt(short = "o", long, parse(from_os_str))]
-    output: PathBuf
+    output: PathBuf,
 }
 
 fn main() -> Result<()> {

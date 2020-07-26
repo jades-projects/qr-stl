@@ -1,0 +1,42 @@
+main {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+img {
+    display: block;
+}
+
+pre>code {
+    background-color: #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+a {
+    color: rgb(190, 25, 190);
+}
+
+body {
+    background-color: #fae7fa;
+    font-family: sans-serif;
+}
+
+label {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    display: block;
+    padding-top: 0.7rem;
+}
+
+input, button {
+    font-size: 1.1rem;
+}
+
+button {
+    display: block;
+    margin-top: 1rem;
+}
